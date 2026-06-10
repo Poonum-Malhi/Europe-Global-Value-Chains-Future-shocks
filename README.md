@@ -47,6 +47,12 @@ Note: No regression is run in this project — the RVI is a **descriptive index*
 3. Only forward linkages used — backward linkages omitted
 4. Descriptive index only — no causal identification
 
+## Visualisations
+| Figure | Description | Link |
+|--------|-------------|------|
+| Vulnerability Bar Chart | EU-27 ranked by reshoring exposure | [View](https://poonum-malhi.github.io/europe-under-pressure-gvc-reshoring/fig_project5_reshoring.html) |
+| GVC Bubble Chart | Depth vs manufacturing intensity | 
+
 ## Europe Under Pressure — Full Series
 | Project | Question | Key Result |
 |---------|----------|------------|
