@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EU-27 Reshoring Vulnerability Index — Project 5</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8f9fa; margin: 0; padding: 24px; color: #1a1a1a; }
+  h1 { font-size: 20px; font-weight: 600; margin: 0 0 4px; }
+  .subtitle { font-size: 13px; color: #666; margin: 0 0 24px; }
+  .legend { display: flex; gap: 20px; margin-bottom: 12px; font-size: 13px; color: #444; }
+  .legend span { display: flex; align-items: center; gap: 6px; }
+  .dot { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+  .card { background: white; border-radius: 10px; padding: 24px; margin-bottom: 24px; border: 1px solid #e5e7eb; }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+  .metric { background: #f1f5f9; border-radius: 8px; padding: 14px; }
+  .metric-label { font-size: 12px; color: #666; margin: 0 0 4px; }
+  .metric-value { font-size: 22px; font-weight: 600; margin: 0; }
+  .metric-sub { font-size: 11px; color: #888; margin: 4px 0 0; }
+  .chart-wrap { position: relative; width: 100%; }
+  .footer { font-size: 12px; color: #999; margin-top: 16px; }
+  a { color: #3b82f6; }
+</style>
+</head>
+<body>
+
+<h1>🌍 EU-27 Reshoring Vulnerability Index</h1>
+<p class="subtitle">Part 5 of the <em>Europe Under Pressure</em> series &nbsp;·&nbsp; OECD TiVA 2023 &nbsp;·&nbsp; Reference year: 2020</p>
+
+<div class="grid">
+  <div class="metric"><p class="metric-label">Most exposed</p><p class="metric-value">Czechia</p><p class="metric-sub">Score: 100</p></div>
+  <div class="metric"><p class="metric-label">Least exposed</p><p class="metric-value">Cyprus</p><p class="metric-sub">Score: 0</p></div>
+  <div class="metric"><p class="metric-label">Countries &gt; 70</p><p class="metric-value">6</p><p class="metric-sub">High risk</p></div>
+  <div class="metric"><p class="metric-label">EU-27 average</p><p class="metric-value">52.4</p><p class="metric-sub">Index score</p></div>
+</div>
+
+<div class="card">
+  <div class="legend">
+    <span><span class="dot" style="background:#c0392b"></span>High (&gt;70)</span>
+    <span><span class="dot" style="background:#e67e22"></span>Medium (40–70)</span>
+    <span><span class="dot" style="background:#27ae60"></span>Low (&lt;40)</span>
+  </div>
+  <div class="chart-wrap" style="height: 820px;">
+    <canvas id="barChart" role="img" aria-label="Reshoring vulnerability ranking for EU-27 countries"></canvas>
+  </div>
+</div>
+
+<div class="card">
+  <p style="font-size:14px; font-weight:600; margin:0 0 4px;">GVC Depth vs Manufacturing Intensity</p>
+  <p style="font-size:12px; color:#666; margin:0 0 16px;">Bubble size = Reshoring Vulnerability Index. Hover for country details.</p>
+  <div class="chart-wrap" style="height: 400px;">
+    <canvas id="scatterChart" role="img" aria-label="Scatter plot of GVC depth vs manufacturing share for EU-27"></canvas>
+  </div>
+</div>
+
+<p class="footer">
+  Data: OECD TiVA 2023 (forward linkages), World Bank WDI (manufacturing share, GDP) &nbsp;·&nbsp;
+  Method: RVI = GVC Depth × Manufacturing Share, normalised 0–100 &nbsp;·&nbsp;
+  Root paper: Antràs &amp; Chor (2013), <em>Econometrica</em> &nbsp;·&nbsp;
+  <a href="https://github.com/Poonum-Malhi" target="_blank">github.com/Poonum-Malhi</a>
+</p>
+
+<script>
+const data = [
+  {c:'Czechia',    code:'CZE', gvc:0.936, manuf:25, score:100.0},
+  {c:'Ireland',    code:'IRL', gvc:0.974, manuf:22, score:89.4},
+  {c:'Slovakia',   code:'SVK', gvc:0.953, manuf:22, score:87.0},
+  {c:'Hungary',    code:'HUN', gvc:0.899, manuf:22, score:80.6},
+  {c:'Romania',    code:'ROU', gvc:0.941, manuf:21, score:80.5},
+  {c:'Slovenia',   code:'SVN', gvc:0.930, manuf:21, score:79.2},
+  {c:'Germany',    code:'DEU', gvc:0.946, manuf:19, score:70.9},
+  {c:'Poland',     code:'POL', gvc:0.916, manuf:18, score:63.0},
+  {c:'Finland',    code:'FIN', gvc:0.911, manuf:18, score:62.5},
+  {c:'Lithuania',  code:'LTU', gvc:0.934, manuf:17, score:59.6},
+  {c:'Estonia',    code:'EST', gvc:0.930, manuf:17, score:59.3},
+  {c:'Austria',    code:'AUT', gvc:0.930, manuf:17, score:59.3},
+  {c:'Italy',      code:'ITA', gvc:0.934, manuf:16, score:54.6},
+  {c:'Bulgaria',   code:'BGR', gvc:0.928, manuf:16, score:54.2},
+  {c:'Sweden',     code:'SWE', gvc:0.935, manuf:15, score:49.7},
+  {c:'Denmark',    code:'DNK', gvc:0.904, manuf:14, score:42.4},
+  {c:'Belgium',    code:'BEL', gvc:0.937, manuf:13, score:39.8},
+  {c:'Spain',      code:'ESP', gvc:0.936, manuf:13, score:39.8},
+  {c:'Malta',      code:'MLT', gvc:1.106, manuf:11, score:39.7},
+  {c:'Croatia',    code:'HRV', gvc:0.885, manuf:13, score:36.2},
+  {c:'Netherlands',code:'NLD', gvc:0.921, manuf:12, score:33.8},
+  {c:'Portugal',   code:'PRT', gvc:0.912, manuf:12, score:33.1},
+  {c:'Latvia',     code:'LVA', gvc:0.924, manuf:11, score:29.0},
+  {c:'France',     code:'FRA', gvc:0.933, manuf:10, score:24.5},
+  {c:'Greece',     code:'GRC', gvc:0.902, manuf:9,  score:18.0},
+  {c:'Luxembourg', code:'LUX', gvc:0.967, manuf:5,  score:0.4},
+  {c:'Cyprus',     code:'CYP', gvc:0.953, manuf:5,  score:0.0},
+];
+
+function barColor(s) {
+  if (s > 70) return '#c0392b';
+  if (s > 40) return '#e67e22';
+  return '#27ae60';
+}
+
+const sorted = [...data].sort((a,b) => a.score - b.score);
+
+new Chart(document.getElementById('barChart'), {
+  type: 'bar',
+  data: {
+    labels: sorted.map(d => d.c),
+    datasets: [{
+      data: sorted.map(d => d.score),
+      backgroundColor: sorted.map(d => barColor(d.score)),
+      borderWidth: 0,
+      borderRadius: 3,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          title: ctx => sorted[ctx[0].dataIndex].c,
+          label: ctx => [
+            ` Vulnerability: ${ctx.parsed.x}`,
+            ` Manufacturing: ${sorted[ctx.dataIndex].manuf}%`,
+            ` GVC depth: ${sorted[ctx.dataIndex].gvc.toFixed(2)}`
+          ]
+        }
+      }
+    },
+    scales: {
+      x: { min:0, max:110, title:{ display:true, text:'Reshoring Vulnerability Index (0 = lowest, 100 = highest)' }, grid:{ color:'rgba(0,0,0,0.06)' }, ticks:{ autoSkip:false } },
+      y: { ticks:{ font:{ size:12 } }, grid:{ display:false } }
+    }
+  }
+});
+
+new Chart(document.getElementById('scatterChart'), {
+  type: 'bubble',
+  data: {
+    datasets: [
+      { label:'High (>70)',   data: data.filter(d=>d.score>70).map(d=>({x:d.gvc,y:d.manuf,r:d.score/10,label:d.code})),   backgroundColor:'rgba(192,57,43,0.55)',  borderColor:'#c0392b', borderWidth:1 },
+      { label:'Medium(40-70)',data: data.filter(d=>d.score>=40&&d.score<=70).map(d=>({x:d.gvc,y:d.manuf,r:d.score/10,label:d.code})), backgroundColor:'rgba(230,126,34,0.55)', borderColor:'#e67e22', borderWidth:1 },
+      { label:'Low (<40)',    data: data.filter(d=>d.score<40).map(d=>({x:d.gvc,y:d.manuf,r:Math.max(d.score/10,3),label:d.code})), backgroundColor:'rgba(39,174,96,0.55)',  borderColor:'#27ae60', borderWidth:1 },
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          title: ctx => ctx[0].raw.label,
+          label: ctx => [` GVC depth: ${ctx.raw.x.toFixed(2)}`, ` Manufacturing: ${ctx.raw.y}%`, ` RVI: ${ctx.raw.r*10}`]
+        }
+      }
+    },
+    scales: {
+      x: { min:0.85, max:1.15, title:{ display:true, text:'GVC depth (forward linkage / GDP)' }, grid:{ color:'rgba(0,0,0,0.06)' } },
+      y: { min:0, max:30,    title:{ display:true, text:'Manufacturing share of GDP (%)' },      grid:{ color:'rgba(0,0,0,0.06)' } }
+    }
+  }
+});
+</script>
+</body>
+</html>
