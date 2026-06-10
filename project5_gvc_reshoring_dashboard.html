@@ -1,0 +1,167 @@
+
+<h2 class="sr-only">Project 5 — EU-27 GVC Reshoring Vulnerability Dashboard, 2020</h2>
+
+<div style="padding: 1rem 0 0.5rem;">
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 1.5rem;">
+    <div style="background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 1rem;">
+      <p style="font-size: 13px; color: var(--color-text-secondary); margin: 0 0 4px;">Most exposed</p>
+      <p style="font-size: 20px; font-weight: 500; margin: 0; color: var(--color-text-primary);">Czechia</p>
+      <p style="font-size: 12px; color: var(--color-text-secondary); margin: 4px 0 0;">Score: 100</p>
+    </div>
+    <div style="background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 1rem;">
+      <p style="font-size: 13px; color: var(--color-text-secondary); margin: 0 0 4px;">Least exposed</p>
+      <p style="font-size: 20px; font-weight: 500; margin: 0; color: var(--color-text-primary);">Cyprus</p>
+      <p style="font-size: 12px; color: var(--color-text-secondary); margin: 4px 0 0;">Score: 0</p>
+    </div>
+    <div style="background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 1rem;">
+      <p style="font-size: 13px; color: var(--color-text-secondary); margin: 0 0 4px;">Countries >70</p>
+      <p style="font-size: 20px; font-weight: 500; margin: 0; color: var(--color-text-primary);">6</p>
+      <p style="font-size: 12px; color: var(--color-text-secondary); margin: 4px 0 0;">High risk</p>
+    </div>
+    <div style="background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 1rem;">
+      <p style="font-size: 13px; color: var(--color-text-secondary); margin: 0 0 4px;">EU average</p>
+      <p style="font-size: 20px; font-weight: 500; margin: 0; color: var(--color-text-primary);">52.4</p>
+      <p style="font-size: 12px; color: var(--color-text-secondary); margin: 4px 0 0;">Index score</p>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 8px; font-size: 12px; color: var(--color-text-secondary);">
+    <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 10px; height: 10px; border-radius: 2px; background: #c0392b;"></span>High (>70)</span>
+    <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 10px; height: 10px; border-radius: 2px; background: #e67e22;"></span>Medium (40–70)</span>
+    <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 10px; height: 10px; border-radius: 2px; background: #27ae60;"></span>Low (<40)</span>
+  </div>
+
+  <div style="position: relative; width: 100%; height: 820px;">
+    <canvas id="barChart" role="img" aria-label="Horizontal bar chart showing reshoring vulnerability index for 27 EU countries. Czechia is highest at 100, Cyprus lowest at 0.">EU-27 reshoring vulnerability scores from 0 (Cyprus) to 100 (Czechia).</canvas>
+  </div>
+
+  <div style="margin-top: 2rem; position: relative; width: 100%; height: 380px;">
+    <canvas id="scatterChart" role="img" aria-label="Scatter chart of GVC depth vs manufacturing share for EU-27 countries. Countries in top-right corner are most vulnerable.">Countries with high GVC depth and high manufacturing share are most vulnerable to reshoring.</canvas>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const data = [
+  {c:'Czechia',   code:'CZE', gvc:0.936, manuf:25, score:100.0},
+  {c:'Ireland',   code:'IRL', gvc:0.974, manuf:22, score:89.4},
+  {c:'Slovakia',  code:'SVK', gvc:0.953, manuf:22, score:87.0},
+  {c:'Hungary',   code:'HUN', gvc:0.899, manuf:22, score:80.6},
+  {c:'Romania',   code:'ROU', gvc:0.941, manuf:21, score:80.5},
+  {c:'Slovenia',  code:'SVN', gvc:0.930, manuf:21, score:79.2},
+  {c:'Germany',   code:'DEU', gvc:0.946, manuf:19, score:70.9},
+  {c:'Poland',    code:'POL', gvc:0.916, manuf:18, score:63.0},
+  {c:'Finland',   code:'FIN', gvc:0.911, manuf:18, score:62.5},
+  {c:'Lithuania', code:'LTU', gvc:0.934, manuf:17, score:59.6},
+  {c:'Estonia',   code:'EST', gvc:0.930, manuf:17, score:59.3},
+  {c:'Austria',   code:'AUT', gvc:0.930, manuf:17, score:59.3},
+  {c:'Italy',     code:'ITA', gvc:0.934, manuf:16, score:54.6},
+  {c:'Bulgaria',  code:'BGR', gvc:0.928, manuf:16, score:54.2},
+  {c:'Sweden',    code:'SWE', gvc:0.935, manuf:15, score:49.7},
+  {c:'Denmark',   code:'DNK', gvc:0.904, manuf:14, score:42.4},
+  {c:'Belgium',   code:'BEL', gvc:0.937, manuf:13, score:39.8},
+  {c:'Spain',     code:'ESP', gvc:0.936, manuf:13, score:39.8},
+  {c:'Malta',     code:'MLT', gvc:1.106, manuf:11, score:39.7},
+  {c:'Croatia',   code:'HRV', gvc:0.885, manuf:13, score:36.2},
+  {c:'Netherlands',code:'NLD',gvc:0.921, manuf:12, score:33.8},
+  {c:'Portugal',  code:'PRT', gvc:0.912, manuf:12, score:33.1},
+  {c:'Latvia',    code:'LVA', gvc:0.924, manuf:11, score:29.0},
+  {c:'France',    code:'FRA', gvc:0.933, manuf:10, score:24.5},
+  {c:'Greece',    code:'GRC', gvc:0.902, manuf:9,  score:18.0},
+  {c:'Luxembourg',code:'LUX', gvc:0.967, manuf:5,  score:0.4},
+  {c:'Cyprus',    code:'CYP', gvc:0.953, manuf:5,  score:0.0},
+];
+
+function barColor(score) {
+  if (score > 70) return '#c0392b';
+  if (score > 40) return '#e67e22';
+  return '#27ae60';
+}
+
+const sorted = [...data].sort((a,b) => a.score - b.score);
+
+new Chart(document.getElementById('barChart'), {
+  type: 'bar',
+  data: {
+    labels: sorted.map(d => d.c),
+    datasets: [{
+      label: 'Reshoring Vulnerability Index',
+      data: sorted.map(d => d.score),
+      backgroundColor: sorted.map(d => barColor(d.score)),
+      borderWidth: 0,
+      borderRadius: 3,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: ctx => ` Score: ${ctx.parsed.x}  |  Manuf: ${sorted[ctx.dataIndex].manuf}%  |  GVC depth: ${sorted[ctx.dataIndex].gvc.toFixed(2)}`
+        }
+      }
+    },
+    scales: {
+      x: {
+        min: 0, max: 110,
+        title: { display: true, text: 'Vulnerability index (0 = lowest, 100 = highest)', font: { size: 12 } },
+        grid: { color: 'rgba(128,128,128,0.15)' },
+        ticks: { autoSkip: false }
+      },
+      y: {
+        ticks: { font: { size: 12 } },
+        grid: { display: false }
+      }
+    }
+  }
+});
+
+new Chart(document.getElementById('scatterChart'), {
+  type: 'bubble',
+  data: {
+    datasets: [{
+      label: 'High risk (>70)',
+      data: data.filter(d=>d.score>70).map(d=>({x:d.gvc, y:d.manuf, r: d.score/12, label:d.code})),
+      backgroundColor: 'rgba(192,57,43,0.6)', borderColor: '#c0392b', borderWidth: 1
+    },{
+      label: 'Medium (40–70)',
+      data: data.filter(d=>d.score>=40&&d.score<=70).map(d=>({x:d.gvc, y:d.manuf, r: d.score/12, label:d.code})),
+      backgroundColor: 'rgba(230,126,34,0.6)', borderColor: '#e67e22', borderWidth: 1
+    },{
+      label: 'Low (<40)',
+      data: data.filter(d=>d.score<40).map(d=>({x:d.gvc, y:d.manuf, r: Math.max(d.score/12, 3), label:d.code})),
+      backgroundColor: 'rgba(39,174,96,0.6)', borderColor: '#27ae60', borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: ctx => {
+            const d = ctx.raw;
+            return ` ${ctx.raw.label}  GVC: ${d.x.toFixed(2)}  Manuf: ${d.y}%`;
+          }
+        }
+      }
+    },
+    scales: {
+      x: {
+        min: 0.85, max: 1.15,
+        title: { display: true, text: 'GVC depth (forward linkage / GDP)', font: { size: 12 } },
+        grid: { color: 'rgba(128,128,128,0.15)' }
+      },
+      y: {
+        min: 0, max: 30,
+        title: { display: true, text: 'Manufacturing share of GDP (%)', font: { size: 12 } },
+        grid: { color: 'rgba(128,128,128,0.15)' }
+      }
+    }
+  }
+});
+</script>
