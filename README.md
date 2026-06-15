@@ -66,4 +66,7 @@ Note: No regression is run in this project — the RVI is a **descriptive index*
 Antràs, P., & Chor, D. (2013). Organizing the Global Value Chain. *Econometrica*, 81(6), 2127–2204.
 
 ---
-*Part of the Europe Under Pressure research series — exploring structural economic shocks across the EU.*
+
+Thank you so much for being part of my project series! 
+
+*Part of the Europe Under Pressure research series, exploring structural economic shocks across the EU.*
