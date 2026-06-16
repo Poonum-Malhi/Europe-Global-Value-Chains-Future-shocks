@@ -60,7 +60,7 @@ Note: No regression is run in this project — the RVI is a **descriptive index*
 | [Part 3 — Climate Shock](https://github.com/Poonum-Malhi/climate-shock-europe) | Does CBAM exposure raise EU unemployment? | p=0.009 — Significant, but negative direction |
 | [Part 4 — Housing Shock](https://github.com/Poonum-Malhi/Housing-Affordability-Shock-Index) | Does housing unaffordability raise unemployment? | p=0.66 — No. Labour markets resilient |
 | **Part 5 — GVC & Reshoring** (this repo) | **Which EU countries are most reshoring-exposed?** | **Czechia, Ireland, Slovakia most vulnerable** |
-| Part 6 - GVC & Trade Balance (https://github.com/Poonum-Malhi/GVC-Reshoring-Trade-Balance-EU/blob/main/README.md) | Does reshoring vulnerability predict post-2020 trade balance shifts? | Panel regression, 2019 baseline |
+| [Part 6 - GVC & Trade Balance](https://github.com/Poonum-Malhi/GVC-Reshoring-Trade-Balance-EU/blob/main/README.md) | Does reshoring vulnerability predict post-2020 trade balance shifts? | Panel regression, 2019 baseline |
 
 ## Root Paper
 Antràs, P., & Chor, D. (2013). Organizing the Global Value Chain. *Econometrica*, 81(6), 2127–2204.
