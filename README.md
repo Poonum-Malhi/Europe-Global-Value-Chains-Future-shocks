@@ -100,6 +100,25 @@ The original analysis (above) found no significant relationship between GVC dept
 With the larger panel, Gaulier's intuition holds up statistically: in small economies, higher trade openness is associated with a **significantly lower** manufacturing share (p < 0.05). Large economies show the opposite sign (higher openness associated with higher manufacturing share), though only at the 10% level. The full-sample regression shows no relationship at all — the two opposing subsample patterns cancel out, which is why the original pooled 2020 cross-section missed this.
 
 A plausible reading: small open economies (Cyprus, Malta, Luxembourg, the Baltics) that increase trade integration tend to specialize further into services and finance rather than manufacturing, while large economies (Germany, France) use greater trade openness to reinforce an already-large manufacturing base that benefits from scale. This is offered as a descriptive pattern, not a causal claim — the panel does not include country or time fixed effects, and trade openness is an imperfect proxy for the original GVC-depth measure.
+Data and Methodology
+Sample: 26 EU countries, 2015–2023 (234 country-year observations)
+Proxy note: OECD TiVA forward-linkage data (used for the original 2020 GVC Depth measure above) is not readily available as a multi-year panel. This extension uses Trade Openness — (Exports + Imports) / GDP, built from World Bank WDI indicators NE.EXP.GNFS.ZS and NE.IMP.GNFS.ZS — as a proxy for GVC integration. This is a broader measure of trade integration, not a direct substitute for GVC forward linkages, and this substitution is an explicit limitation of this extension.
+Small vs. large split: countries are classified as "small" or "large" by GDP, split at the median within each year (so classification can shift slightly year to year as relative GDP changes).
+Model: Pooled OLS of Manufacturing (% of GDP) on Trade Openness, with standard errors clustered by country, estimated separately for the small and large subsamples.
+
+Results
+
+Subsample	β (Trade Openness → Manufacturing)	p-value	N
+Full panel	−0.005	0.857	234
+Small economies	−0.027	0.018	117
+Large economies	+0.073	0.067	117
+
+Interpretation
+With the larger panel, Gaulier's intuition holds up statistically: in small economies, higher trade openness is associated with a significantly lower manufacturing share (p < 0.05). Large economies show the opposite sign (higher openness associated with higher manufacturing share), though only at the 10% level. The full-sample regression shows no relationship at all — the two opposing subsample patterns cancel out, which is why the original pooled 2020 cross-section missed this.
+
+An earlier version of this panel (2015–2022, 208 observations) found the same pattern at p = 0.029 for small economies. Extending the window by one further year (2023), using freshly pulled exports, imports, GDP, and manufacturing data, strengthens the result to p = 0.018 rather than weakening it — evidence the finding is not an artefact of the specific 2015–2022 window originally chosen.
+
+A plausible reading: small open economies (Cyprus, Malta, Luxembourg, the Baltics) that increase trade integration tend to specialize further into services and finance rather than manufacturing, while large economies (Germany, France) use greater trade openness to reinforce an already-large manufacturing base that benefits from scale. This is offered as a descriptive pattern, not a causal claim — the panel does not include country or time fixed effects, and trade openness is an imperfect proxy for the original GVC-depth measure.
 
 ### Limitations
 
@@ -111,3 +130,4 @@ A plausible reading: small open economies (Cyprus, Malta, Luxembourg, the Baltic
 ### Acknowledgment
 
 Thanks to Guillaume Gaulier (CEPII / Banque de France) for the methodological suggestion that motivated this extension.
+
