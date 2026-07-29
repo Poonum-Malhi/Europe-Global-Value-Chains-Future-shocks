@@ -85,12 +85,7 @@ Proxy note: OECD TiVA forward-linkage data (used for the original 2020 GVC Depth
 Small vs. large split: countries are classified as "small" or "large" by GDP, split at the median within each year (so classification can shift slightly year to year as relative GDP changes).
 Model: Pooled OLS of Manufacturing (% of GDP) on Trade Openness, with standard errors clustered by country, estimated separately for the small and large subsamples.
 
-Results
-
-Subsample	β (Trade Openness → Manufacturing)	p-value	N
-Full panel	−0.005	0.857	234
-Small economies	−0.027	0.018	117
-Large economies	+0.073	0.067	117
+Results Subsample β (Trade Openness → Manufacturing) p-value N Full panel −0.005 0.857 234 Small economies −0.027 0.018 117 Large economies +0.073 0.067 117
 
 Interpretation
 With the larger panel, Gaulier's intuition holds up statistically: in small economies, higher trade openness is associated with a significantly lower manufacturing share (p < 0.05). Large economies show the opposite sign (higher openness associated with higher manufacturing share), though only at the 10% level. The full-sample regression shows no relationship at all — the two opposing subsample patterns cancel out, which is why the original pooled 2020 cross-section missed this.
